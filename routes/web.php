@@ -9,6 +9,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Halaman katalog produk
+Route::get('/catalog', function () {
+    return view('catalog.index');
+})->name('catalog.index');
+
 // Detail Produk (halaman user)
 Route::get('/produk/{id}', function ($id) {
     $products = [
@@ -64,4 +69,5 @@ Route::prefix('admin')->group(function () {
     Route::get('/transaksi', function () {
         return view('admin.transaksi');
     })->name('admin.transaksi');
+    
 });
