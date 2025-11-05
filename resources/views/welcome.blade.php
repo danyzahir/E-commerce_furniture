@@ -1,0 +1,159 @@
+@extends('layouts.app')
+
+@section('title', 'Beranda - FinLoka')
+
+@section('content')
+  <main class="container mx-auto px-4 py-8">
+
+    <!-- SLIDER -->
+    <section class="relative overflow-hidden rounded-2xl shadow-lg mb-12 h-64 md:h-96 -mt-4 md:-mt-6">
+      <div id="slider" class="flex transition-transform duration-700 ease-in-out h-full select-none">
+        <div class="min-w-full bg-gradient-to-r from-sky-300 to-sky-500 flex items-center justify-center text-3xl md:text-4xl font-bold text-white">Promo Spesial Minggu Ini</div>
+        <div class="min-w-full bg-gradient-to-r from-sky-400 to-blue-500 flex items-center justify-center text-3xl md:text-4xl font-bold text-white">Diskon 50% Produk Pilihan</div>
+        <div class="min-w-full bg-gradient-to-r from-blue-400 to-sky-500 flex items-center justify-center text-3xl md:text-4xl font-bold text-white">Belanja Nyaman & Aman</div>
+      </div>
+
+      <button onclick="moveSlide(-1)" class="absolute top-1/2 left-4 -translate-y-1/2 bg-white/80 backdrop-blur-md text-sky-700 hover:bg-sky-500 hover:text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+      </button>
+
+      <button onclick="moveSlide(1)" class="absolute top-1/2 right-4 -translate-y-1/2 bg-white/80 backdrop-blur-md text-sky-700 hover:bg-sky-500 hover:text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all duration-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+      </button>
+
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+        <span class="slider-dot w-3 h-3 bg-white/70 rounded-full transition"></span>
+        <span class="slider-dot w-3 h-3 bg-white/50 rounded-full transition"></span>
+        <span class="slider-dot w-3 h-3 bg-white/50 rounded-full transition"></span>
+      </div>
+    </section>
+
+    <!-- KATEGORI -->
+    <section class="mb-16">
+      <h2 class="font-bold text-2xl mb-6 text-gray-800 select-none text-center">Kategori Produk</h2>
+      <div class="flex justify-center flex-wrap gap-6 snap-x snap-mandatory scrollbar-thin pb-2">
+        @foreach (['Perabotan','Dekorasi','Dapur'] as $i => $kategori)
+          <div class="flex-shrink-0 w-32 snap-center text-center">
+            <div class="bg-sky-100 p-4 rounded-full mx-auto w-24 h-24 flex items-center justify-center shadow hover:bg-sky-200 transition">
+              <img src="https://via.placeholder.com/60x60?text=K{{ $i+1 }}" class="object-contain w-12 h-12" alt="{{ $kategori }}">
+            </div>
+            <p class="mt-3 text-gray-700 font-medium text-sm">{{ $kategori }}</p>
+          </div>
+        @endforeach
+      </div>
+    </section>
+
+    <!-- PRODUK TERLARIS -->
+    <section class="mb-20 relative">
+      <h2 class="font-bold text-2xl mb-6 text-gray-800 select-none text-center">Produk Terlaris</h2>
+      <div class="mb-6 rounded-2xl overflow-hidden shadow">
+        <img src="https://via.placeholder.com/900x250/bae6fd/0369a1?text=Banner+Produk+Unggulan" alt="Banner" class="w-full object-cover h-52 md:h-64" />
+      </div>
+
+      <div class="relative">
+        <button id="prevProductBtn" class="absolute top-1/2 -left-4 -translate-y-1/2 bg-white/80 text-sky-700 hover:bg-sky-500 hover:text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-10">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+        </button>
+
+        <div id="productCarousel" class="flex overflow-hidden scroll-smooth space-x-6 px-2 md:px-6"></div>
+
+        <button id="nextProductBtn" class="absolute top-1/2 -right-4 -translate-y-1/2 bg-white/80 text-sky-700 hover:bg-sky-500 hover:text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg z-10">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- PRODUK UNTUKMU -->
+    <section class="mb-20">
+      <h2 class="font-bold text-2xl mb-6 text-gray-800 select-none text-center">Produk Untukmu</h2>
+      <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6"></div>
+      <div class="text-center mt-8">
+        <button id="loadMoreBtn" class="px-6 py-2.5 bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-full shadow transition-all duration-300">
+          Muat Lebih Banyak
+        </button>
+      </div>
+    </section>
+
+  </main>
+@endsection
+
+@push('scripts')
+<script>
+  // === SLIDER ===
+  let slideIndex = 0;
+  const slides = document.querySelectorAll("#slider > div");
+  const dots = document.querySelectorAll(".slider-dot");
+
+  function moveSlide(n) {
+    slideIndex = (slideIndex + n + slides.length) % slides.length;
+    document.getElementById("slider").style.transform = `translateX(-${slideIndex * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle("active", i === slideIndex));
+  }
+
+  setInterval(() => moveSlide(1), 4000);
+
+  // === PRODUK ===
+  const products = [
+    { img:"https://via.placeholder.com/250x200?text=Kursi+1", name:"New Tolix Wood High Stool H76cm", price:599000, oldPrice:null, discount:null },
+    { img:"https://via.placeholder.com/250x200?text=Meja+1", name:"Jessica-B Aluminium Table Base", price:579000, oldPrice:629000, discount:"8%" },
+    { img:"https://via.placeholder.com/250x200?text=Meja+2", name:"Dakota Round Metal Table", price:799000, oldPrice:899000, discount:"11%" },
+    { img:"https://via.placeholder.com/250x200?text=Meja+3", name:"Steffany Coffee Table SCT310", price:1199000, oldPrice:2349000, discount:"49%" },
+    { img:"https://via.placeholder.com/250x200?text=Kursi+2", name:"De Grass Wicker Chair WR2719", price:320000, oldPrice:null, discount:null },
+    { img:"https://via.placeholder.com/250x200?text=Sofa", name:"Elegant Brown Sofa", price:2500000, oldPrice:2999000, discount:"17%" },
+    { img:"https://via.placeholder.com/250x200?text=Lampu", name:"Modern Lamp Gold Edition", price:450000, oldPrice:null, discount:null },
+    { img:"https://via.placeholder.com/250x200?text=Rak", name:"Minimalist Wooden Shelf", price:700000, oldPrice:850000, discount:"18%" },
+  ];
+
+  const productCarousel = document.getElementById("productCarousel");
+  products.slice(0, 4).forEach(p => {
+    productCarousel.innerHTML += `
+      <div class="min-w-[250px] bg-white rounded-xl shadow hover:shadow-lg transition relative p-4">
+        ${p.discount ? `<span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">-${p.discount}</span>` : ""}
+        <img src="${p.img}" class="rounded-md mb-3 w-full h-40 object-cover">
+        <p class="font-semibold text-gray-700 mb-1 truncate">${p.name}</p>
+        <p class="text-sm text-gray-500 mb-1">⭐ Belum ada rating</p>
+        <p class="text-sm text-gray-500 mb-1">Terjual (0)</p>
+        <p class="text-sm text-gray-500 mb-2">Atria Puri Indah (Jakarta)</p>
+        <div class="flex items-center space-x-2">
+          <p class="text-black font-bold text-lg">Rp ${p.price.toLocaleString("id-ID")}</p>
+          ${p.oldPrice ? `<p class="text-gray-400 line-through text-sm">Rp ${p.oldPrice.toLocaleString("id-ID")}</p>` : ""}
+        </div>
+      </div>`;
+  });
+
+  document.getElementById("prevProductBtn").onclick = () => productCarousel.scrollBy({ left: -260, behavior: "smooth" });
+  document.getElementById("nextProductBtn").onclick = () => productCarousel.scrollBy({ left: 260, behavior: "smooth" });
+
+  // === PRODUK UNTUKMU ===
+  const productGrid = document.getElementById("productGrid");
+  const loadMoreBtn = document.getElementById("loadMoreBtn");
+  let shownCount = 4;
+
+  function renderProducts() {
+    productGrid.innerHTML = "";
+    products.slice(0, shownCount).forEach(p => {
+      productGrid.innerHTML += `
+        <div class="bg-white rounded-xl shadow hover:shadow-lg transition relative p-4">
+          ${p.discount ? `<span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">-${p.discount}</span>` : ""}
+          <img src="${p.img}" alt="${p.name}" class="rounded-md mb-3 w-full h-40 object-cover">
+          <p class="font-semibold text-gray-700 mb-1 truncate">${p.name}</p>
+          <p class="text-sm text-gray-500 mb-1">⭐ Belum ada rating</p>
+          <p class="text-sm text-gray-500 mb-1">Terjual (0)</p>
+          <p class="text-sm text-gray-500 mb-2">Atria Puri Indah (Jakarta)</p>
+          <div class="flex items-center space-x-2">
+            <p class="text-black font-bold text-lg">Rp ${p.price.toLocaleString("id-ID")}</p>
+            ${p.oldPrice ? `<p class="text-gray-400 line-through text-sm">Rp ${p.oldPrice.toLocaleString("id-ID")}</p>` : ""}
+          </div>
+        </div>`;
+    });
+    if (shownCount >= products.length) loadMoreBtn.style.display = "none";
+  }
+
+  loadMoreBtn.onclick = () => {
+    shownCount += 4;
+    renderProducts();
+  };
+
+  renderProducts();
+</script>
+@endpush
