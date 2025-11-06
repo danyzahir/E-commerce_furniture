@@ -15,53 +15,52 @@
 </head>
 <body class="bg-white font-sans text-gray-800">
 
-  {{-- HEADER --}}
-  <header class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-white/10">
-    <div class="container mx-auto flex items-center justify-between px-6 py-3">
-      
-      {{-- LOGO --}}
-      <div class="flex items-center space-x-2 select-none">
-        <div class="bg-white/20 p-2 rounded-xl shadow-inner">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-sky-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-          </svg>
-        </div>
-        <span class="font-extrabold text-2xl text-sky-700 tracking-wide drop-shadow">FinLoka</span>
+<header class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-white/10">
+  <div class="container mx-auto flex items-center justify-between px-4 md:px-6 py-2">
+    
+    {{-- LOGO --}}
+    <div class="flex items-center space-x-3 select-none">
+      <div class="bg-white/20 p-2 rounded-xl shadow-inner">
+        {{-- Bisa taruh ikon kecil di sini jika mau --}}
       </div>
-
-      {{-- SEARCH BAR --}}
-      <div class="flex-grow mx-6 hidden md:block max-w-md">
-        <input type="text" placeholder="Cari produk..."
-          class="w-full rounded-full px-5 py-2.5 bg-white/80 text-gray-700 border border-sky-200 focus:ring-2 focus:ring-sky-300 focus:outline-none placeholder-gray-500 shadow-inner" />
-      </div>
-
-      {{-- ACTIONS --}}
-      <div class="flex items-center space-x-4">
-        {{-- CART --}}
-        <button aria-label="Keranjang" class="relative group">
-          <svg xmlns="http://www.w3.org/2000/svg"
-            class="w-7 h-7 text-black group-hover:scale-110 transition-transform duration-200"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M3 3h2l.4 2M7 13h14l-1.5 8H6.4L5 6H21" />
-          </svg>
-          <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 shadow-md border border-white/80">
-            3
-          </span>
-        </button>
-
-        <div class="h-6 w-px bg-gray-300"></div>
-
-        {{-- BUTTON LOGIN / REGISTER --}}
-        <button class="bg-white text-sky-600 font-semibold px-5 py-1.5 rounded-full border border-sky-400 hover:bg-sky-50 transition shadow-sm">
-          Masuk
-        </button>
-        <button class="bg-sky-700 text-white font-semibold px-5 py-1.5 rounded-full hover:bg-sky-800 transition shadow-md">
-          Daftar
-        </button>
-      </div>
+      {{-- Logo gambar --}}
+      <img src="{{ asset('img/logo.png') }}" alt="FinLoka Logo" class="h-12 md:h-12 w-auto object-contain drop-shadow">
     </div>
-  </header>
+
+    {{-- SEARCH BAR --}}
+    <div class="flex-grow mx-4 md:mx-6 max-w-xs md:max-w-md hidden md:block">
+      <input type="text" placeholder="Cari produk..."
+        class="w-full rounded-full px-4 py-2.5 bg-white/80 text-gray-700 border border-sky-200 focus:ring-2 focus:ring-sky-300 focus:outline-none placeholder-gray-500 shadow-inner" />
+    </div>
+
+    {{-- ACTIONS --}}
+    <div class="flex items-center space-x-3 md:space-x-4">
+      {{-- CART --}}
+      <button aria-label="Keranjang" class="relative group">
+        <svg xmlns="http://www.w3.org/2000/svg"
+          class="w-6 h-6 md:w-7 md:h-7 text-black group-hover:scale-110 transition-transform duration-200"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 3h2l.4 2M7 13h14l-1.5 8H6.4L5 6H21" />
+        </svg>
+        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 shadow-md border border-white/80">
+          3
+        </span>
+      </button>
+
+      <div class="h-6 w-px bg-gray-300 hidden md:block"></div>
+
+      {{-- BUTTON LOGIN / REGISTER --}}
+      <button class="bg-white text-sky-600 font-semibold px-4 py-1.5 rounded-full border border-sky-400 hover:bg-sky-50 transition shadow-sm text-sm md:text-base">
+        Masuk
+      </button>
+      <button class="bg-sky-700 text-white font-semibold px-4 py-1.5 rounded-full hover:bg-sky-800 transition shadow-md text-sm md:text-base">
+        Daftar
+      </button>
+    </div>
+  </div>
+</header>
+
 
   {{-- ISI HALAMAN --}}
   <main class="container mx-auto px-6 py-8">

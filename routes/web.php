@@ -1,73 +1,56 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\CategoryController;
 
-// ===============================
-// Halaman Utama User
-// ===============================
+/*
+|--------------------------------------------------------------------------
+| ROUTE UNTUK USER (FRONTEND)
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
-// Halaman katalog produk
 Route::get('/catalog', function () {
     return view('catalog.index');
 })->name('catalog.index');
 
-// Detail Produk (halaman user)
 Route::get('/produk/{id}', function ($id) {
     $products = [
-        1 => [
-            'nama' => 'Kursi Kayu Minimalis',
-            'harga' => 750000,
-            'deskripsi' => 'Kursi kayu elegan dengan desain minimalis cocok untuk ruang tamu modern.',
-            'gambar' => '/img/kursi.jpg'
-        ],
-        2 => [
-            'nama' => 'Meja Belajar Putih',
-            'harga' => 550000,
-            'deskripsi' => 'Meja belajar simpel dengan finishing putih bersih dan kokoh.',
-            'gambar' => '/img/meja.jpg'
-        ],
-        3 => [
-            'nama' => 'Sofa 2 Dudukan',
-            'harga' => 2250000,
-            'deskripsi' => 'Sofa empuk dua dudukan dengan kain halus dan rangka kuat.',
-            'gambar' => '/img/sofa.jpg'
-        ],
+        1 => ['nama'=>'Kursi Kayu Minimalis','harga'=>750000,'deskripsi'=>'Kursi kayu elegan desain minimalis','gambar'=>'/img/kursi.jpg'],
+        2 => ['nama'=>'Meja Belajar Putih','harga'=>550000,'deskripsi'=>'Meja belajar simpel','gambar'=>'/img/meja.jpg'],
+        3 => ['nama'=>'Sofa 2 Dudukan','harga'=>2250000,'deskripsi'=>'Sofa empuk dua dudukan','gambar'=>'/img/sofa.jpg'],
     ];
+    if(!isset($products[$id])) abort(404);
+    return view('product',['product'=>$products[$id]]);
+})->name('produk.show');
 
-    if (!isset($products[$id])) {
-        abort(404);
-    }
+/*
+|--------------------------------------------------------------------------
+| ROUTE UNTUK ADMIN DASHBOARD
+|--------------------------------------------------------------------------
+*/
 
-    return view('product', ['product' => $products[$id]]);
-});
+Route::prefix('admin')->name('admin.')->group(function () {
 
-
-// ===============================
-// ROUTE UNTUK ADMIN DASHBOARD
-// ===============================
-Route::prefix('admin')->group(function () {
-
-    // Dashboard utama
     Route::get('/', function () {
         return view('admin.index');
-    })->name('admin.dashboard');
+    })->name('dashboard');
 
-    // Daftar produk (nanti bisa diganti pakai controller)
-    Route::get('/produk', function () {
-        return view('admin.produk');
-    })->name('admin.produk');
-
-    // Daftar pengguna
     Route::get('/pengguna', function () {
         return view('admin.pengguna');
-    })->name('admin.pengguna');
+    })->name('pengguna');
 
-    // Daftar transaksi
     Route::get('/transaksi', function () {
         return view('admin.transaksi');
-    })->name('admin.transaksi');
-    
+    })->name('transaksi');
+
+    // Resource route untuk Produk CRUD
+    Route::resource('produk', ProdukController::class);
+
+    // Resource route untuk Category CRUD (tanpa create, edit, show)
+    Route::resource('categories', CategoryController::class)->except(['create','edit','show']);
 });
