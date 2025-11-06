@@ -1,37 +1,25 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\HomeController;
 
 /*
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 | ROUTE UNTUK USER (FRONTEND)
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/catalog', function () {
-    return view('catalog.index');
-})->name('catalog.index');
+Route::get('/catalog', [HomeController::class, 'catalog'])->name('catalog.index');
 
-Route::get('/produk/{id}', function ($id) {
-    $products = [
-        1 => ['nama'=>'Kursi Kayu Minimalis','harga'=>750000,'deskripsi'=>'Kursi kayu elegan desain minimalis','gambar'=>'/img/kursi.jpg'],
-        2 => ['nama'=>'Meja Belajar Putih','harga'=>550000,'deskripsi'=>'Meja belajar simpel','gambar'=>'/img/meja.jpg'],
-        3 => ['nama'=>'Sofa 2 Dudukan','harga'=>2250000,'deskripsi'=>'Sofa empuk dua dudukan','gambar'=>'/img/sofa.jpg'],
-    ];
-    if(!isset($products[$id])) abort(404);
-    return view('product',['product'=>$products[$id]]);
-})->name('produk.show');
+Route::get('/produk/{id}', [HomeController::class, 'show'])->name('produk.show');
 
 /*
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 | ROUTE UNTUK ADMIN DASHBOARD
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------|
 */
 
 Route::prefix('admin')->name('admin.')->group(function () {
