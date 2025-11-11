@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Kategori - FinLoka Admin</title>
+  <title>Data Kategori - FUNILOKA Admin</title>
   @vite('resources/css/app.css')
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
@@ -16,7 +16,7 @@
     <!-- SIDEBAR -->
     <aside class="w-64 bg-gradient-to-b from-sky-700 to-sky-900 text-white hidden md:flex flex-col shadow-lg">
       <div class="px-6 py-5 text-center font-bold text-2xl border-b border-white/10">
-        FinLoka<span class="text-sky-300">Admin</span>
+        FUNILOKA<span class="text-sky-300">Admin</span>
       </div>
 
       <nav class="flex-1 px-4 py-6 space-y-2 text-sm">

@@ -3,7 +3,7 @@
 @section('title', 'Beranda - FinLoka')
 
 @section('content')
-  <main class="container mx-auto px-4 py-8">
+  <main class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8">
 
     <!-- SLIDER -->
     <section class="relative overflow-hidden rounded-2xl shadow-lg mb-12 h-64 md:h-96 -mt-4 md:-mt-6">
@@ -64,41 +64,46 @@
     </section>
 
     <!-- PRODUK UNTUKMU -->
-<section class="mb-20">
-  <h2 class="font-bold text-2xl mb-8 text-gray-800 select-none text-center">Produk Untukmu</h2>
-  
-  <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 place-items-center">
-    @foreach($produks as $p)
-    <div class="bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-xl transition relative p-5 w-[260px] sm:w-[280px]">
-      @if($p->diskon)
-        <span class="absolute top-4 left-4 bg-red-600 text-white text-sm font-semibold px-3 py-1 rounded-lg shadow-lg">-{{ $p->diskon }}%</span>
-      @endif
+    <section class="mb-20">
+      <h2 class="font-bold text-2xl mb-8 text-gray-800 select-none text-center">Produk Untukmu</h2>
 
-      <div class="overflow-hidden rounded-lg">
-        <img src="{{ asset('storage/'.$p->gambar) }}" alt="{{ $p->nama_produk }}" 
-             class="w-full h-52 object-cover hover:scale-105 transition-transform duration-300 rounded-lg">
+      <div id="productList" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        @foreach($produks as $p)
+          <div class="bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-xl transition relative p-5 product-item hidden">
+            @if($p->diskon)
+              <span class="absolute top-4 left-4 bg-red-600 text-white text-sm font-semibold px-3 py-1 rounded-lg shadow-lg">-{{ $p->diskon }}%</span>
+            @endif
+
+            <div class="overflow-hidden rounded-lg">
+              <img src="{{ asset('storage/'.$p->gambar) }}" alt="{{ $p->nama_produk }}" 
+                   class="w-full h-52 object-cover hover:scale-105 transition-transform duration-300 rounded-lg">
+            </div>
+
+            <p class="font-semibold text-gray-900 text-base sm:text-lg mt-4 leading-snug line-clamp-2 hover:text-sky-600 transition-colors duration-300">
+              {{ $p->nama_produk }}
+            </p>
+
+            <div class="flex justify-between text-gray-500 text-sm mt-2">
+              <div class="flex items-center space-x-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.974a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.388 2.462a1 1 0 00-.364 1.118l1.286 3.974c.3.921-.755 1.688-1.538 1.118l-3.388-2.462a1 1 0 00-1.176 0l-3.388 2.462c-.783.57-1.838-.197-1.538-1.118l1.286-3.974a1 1 0 00-.364-1.118L2.045 9.4c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.974z" />
+                </svg>
+                <span>5/5</span>
+              </div>
+              <span>Terjual (0)</span>
+            </div>
+
+            <p class="text-black font-bold text-lg mt-2">Rp {{ number_format($p->harga,0,',','.') }}</p>
+          </div>
+        @endforeach
       </div>
 
-      <p class="font-semibold text-gray-900 text-base sm:text-lg mt-4 leading-snug line-clamp-2 hover:text-sky-600 transition-colors duration-300">
-        {{ $p->nama_produk }}
-      </p>
-
-      <div class="flex justify-between text-gray-500 text-sm mt-2">
-        <div class="flex items-center space-x-1">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.974a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.388 2.462a1 1 0 00-.364 1.118l1.286 3.974c.3.921-.755 1.688-1.538 1.118l-3.388-2.462a1 1 0 00-1.176 0l-3.388 2.462c-.783.57-1.838-.197-1.538-1.118l1.286-3.974a1 1 0 00-.364-1.118L2.045 9.4c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.974z" />
-          </svg>
-          <span>Belum ada rating</span>
-        </div>
-        <span>Terjual (0)</span>
+      <div class="text-center mt-10">
+        <button id="loadMoreBtn" class="bg-sky-700 hover:bg-sky-800 text-white px-6 py-2 rounded-lg font-medium shadow">
+          Lihat Lebih Banyak
+        </button>
       </div>
-
-      <p class="text-black font-bold text-lg mt-2">Rp {{ number_format($p->harga,0,',','.') }}</p>
-    </div>
-    @endforeach
-  </div>
-</section>
-
+    </section>
 
   </main>
 @endsection
@@ -113,37 +118,25 @@
   function moveSlide(n) {
     slideIndex = (slideIndex + n + slides.length) % slides.length;
     document.getElementById("slider").style.transform = `translateX(-${slideIndex * 100}%)`;
-    dots.forEach((d, i) => d.classList.toggle("active", i === slideIndex));
+    dots.forEach((d, i) => d.classList.toggle("bg-white/90", i === slideIndex));
   }
-
   setInterval(() => moveSlide(1), 4000);
 
-  // === PRODUK ===
+  // === PRODUK TERLARIS ===
   const products = [
-    { img:"https://via.placeholder.com/250x200?text=Kursi+1", name:"New Tolix Wood High Stool H76cm", price:599000, oldPrice:null, discount:null },
-    { img:"https://via.placeholder.com/250x200?text=Meja+1", name:"Jessica-B Aluminium Table Base", price:579000, oldPrice:629000, discount:"8%" },
-    { img:"https://via.placeholder.com/250x200?text=Meja+2", name:"Dakota Round Metal Table", price:799000, oldPrice:899000, discount:"11%" },
-    { img:"https://via.placeholder.com/250x200?text=Meja+3", name:"Steffany Coffee Table SCT310", price:1199000, oldPrice:2349000, discount:"49%" },
-    { img:"https://via.placeholder.com/250x200?text=Kursi+2", name:"De Grass Wicker Chair WR2719", price:320000, oldPrice:null, discount:null },
-    { img:"https://via.placeholder.com/250x200?text=Sofa", name:"Elegant Brown Sofa", price:2500000, oldPrice:2999000, discount:"17%" },
-    { img:"https://via.placeholder.com/250x200?text=Lampu", name:"Modern Lamp Gold Edition", price:450000, oldPrice:null, discount:null },
-    { img:"https://via.placeholder.com/250x200?text=Rak", name:"Minimalist Wooden Shelf", price:700000, oldPrice:850000, discount:"18%" },
+    { img:"https://via.placeholder.com/250x200?text=Kursi+1", name:"New Tolix Wood High Stool H76cm", price:599000 },
+    { img:"https://via.placeholder.com/250x200?text=Meja+1", name:"Jessica-B Aluminium Table Base", price:579000 },
+    { img:"https://via.placeholder.com/250x200?text=Sofa", name:"Elegant Brown Sofa", price:2500000 },
+    { img:"https://via.placeholder.com/250x200?text=Lampu", name:"Modern Lamp Gold Edition", price:450000 },
   ];
 
   const productCarousel = document.getElementById("productCarousel");
-  products.slice(0, 4).forEach(p => {
+  products.forEach(p => {
     productCarousel.innerHTML += `
       <div class="min-w-[250px] bg-white rounded-xl shadow hover:shadow-lg transition relative p-4">
-        ${p.discount ? `<span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">-${p.discount}</span>` : ""}
         <img src="${p.img}" class="rounded-md mb-3 w-full h-40 object-cover">
         <p class="font-semibold text-gray-700 mb-1 truncate">${p.name}</p>
-        <p class="text-sm text-gray-500 mb-1">⭐ Belum ada rating</p>
-        <p class="text-sm text-gray-500 mb-1">Terjual (0)</p>
-        <p class="text-sm text-gray-500 mb-2">Atria Puri Indah (Jakarta)</p>
-        <div class="flex items-center space-x-2">
-          <p class="text-black font-bold text-lg">Rp ${p.price.toLocaleString("id-ID")}</p>
-          ${p.oldPrice ? `<p class="text-gray-400 line-through text-sm">Rp ${p.oldPrice.toLocaleString("id-ID")}</p>` : ""}
-        </div>
+        <p class="text-black font-bold text-lg">Rp ${p.price.toLocaleString("id-ID")}</p>
       </div>`;
   });
 
@@ -151,35 +144,26 @@
   document.getElementById("nextProductBtn").onclick = () => productCarousel.scrollBy({ left: 260, behavior: "smooth" });
 
   // === PRODUK UNTUKMU ===
-  const productGrid = document.getElementById("productGrid");
-  const loadMoreBtn = document.getElementById("loadMoreBtn");
-  let shownCount = 4;
+  document.addEventListener("DOMContentLoaded", function () {
+    const products = document.querySelectorAll(".product-item");
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
 
-  function renderProducts() {
-    productGrid.innerHTML = "";
-    products.slice(0, shownCount).forEach(p => {
-      productGrid.innerHTML += `
-        <div class="bg-white rounded-xl shadow hover:shadow-lg transition relative p-4">
-          ${p.discount ? `<span class="absolute top-3 left-3 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded">-${p.discount}</span>` : ""}
-          <img src="${p.img}" alt="${p.name}" class="rounded-md mb-3 w-full h-40 object-cover">
-          <p class="font-semibold text-gray-700 mb-1 truncate">${p.name}</p>
-          <p class="text-sm text-gray-500 mb-1">⭐ Belum ada rating</p>
-          <p class="text-sm text-gray-500 mb-1">Terjual (0)</p>
-          <p class="text-sm text-gray-500 mb-2">Atria Puri Indah (Jakarta)</p>
-          <div class="flex items-center space-x-2">
-            <p class="text-black font-bold text-lg">Rp ${p.price.toLocaleString("id-ID")}</p>
-            ${p.oldPrice ? `<p class="text-gray-400 line-through text-sm">Rp ${p.oldPrice.toLocaleString("id-ID")}</p>` : ""}
-          </div>
-        </div>`;
+    let visibleCount = 4;
+    const increment = 4;
+
+    for (let i = 0; i < visibleCount && i < products.length; i++) {
+      products[i].classList.remove("hidden");
+    }
+
+    loadMoreBtn.addEventListener("click", () => {
+      for (let i = visibleCount; i < visibleCount + increment && i < products.length; i++) {
+        products[i].classList.remove("hidden");
+      }
+      visibleCount += increment;
+      if (visibleCount >= products.length) {
+        loadMoreBtn.style.display = "none";
+      }
     });
-    if (shownCount >= products.length) loadMoreBtn.style.display = "none";
-  }
-
-  loadMoreBtn.onclick = () => {
-    shownCount += 4;
-    renderProducts();
-  };
-
-  renderProducts();
+  });
 </script>
 @endpush

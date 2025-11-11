@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Produk - FinLoka Admin</title>
+  <title>Data Produk - FUNILOKA Admin</title>
   @vite('resources/css/app.css')
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
@@ -15,7 +15,7 @@
     <!-- SIDEBAR -->
     <aside class="w-64 bg-gradient-to-b from-sky-700 to-sky-900 text-white hidden md:flex flex-col shadow-lg">
       <div class="px-6 py-5 text-center font-bold text-2xl border-b border-white/10">
-        FinLoka<span class="text-sky-300">Admin</span>
+        FUNILOKA<span class="text-sky-300">Admin</span>
       </div>
 
       <nav class="flex-1 px-4 py-6 space-y-2 text-sm">
@@ -64,12 +64,14 @@
     <main class="flex-1 p-6 md:p-10 transition-all duration-200">
       @include('components.alert')
 
-      <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-gray-800">Data Produk</h1>
-        <button onclick="openModal()" class="bg-sky-700 hover:bg-sky-800 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2">
-          <i class="ri-add-line"></i> Tambah Produk
-        </button>
-      </div>
+    <div class="flex flex-col items-start mb-6 gap-3">
+      <h1 class="text-2xl font-bold text-gray-800">Data Produk</h1>
+      <button onclick="openModal()" class="bg-sky-700 hover:bg-sky-800 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center justify-center gap-2">
+        <i class="ri-add-line"></i> Tambah Produk
+      </button>
+   </div>
+
+
 
       <!-- TABLE PRODUK -->
     <div class="bg-white p-6 rounded-2xl shadow border border-gray-200 overflow-x-auto">
