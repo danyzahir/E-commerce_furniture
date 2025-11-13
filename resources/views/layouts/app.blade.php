@@ -23,51 +23,102 @@
 <body class="bg-white font-sans text-gray-800">
 
   {{-- HEADER --}}
-  <header class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between py-2">
-      
-      {{-- LOGO --}}
-      <div class="flex items-center space-x-3 select-none">
-        <img src="{{ asset('img/logo1.png') }}" alt="FinLoka Logo" class="h-12 w-auto object-contain drop-shadow">
-      </div>
+{{-- HEADER --}}
+<header class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between py-2">
 
-      {{-- SEARCH BAR --}}
-      <div class="flex-grow mx-4 md:mx-6 max-w-xs md:max-w-md hidden md:block">
-        <input
-          type="text"
-          placeholder="Cari produk..."
-          class="w-full rounded-full px-4 py-2.5 bg-white/80 text-gray-700 border border-sky-200 
-                 focus:ring-2 focus:ring-sky-300 focus:outline-none placeholder-gray-500 shadow-inner"
-        />
-      </div>
-
-      {{-- ACTIONS --}}
-      <div class="flex items-center space-x-3 md:space-x-4">
-        {{-- CART --}}
-        <button aria-label="Keranjang" class="relative group">
-          <svg xmlns="http://www.w3.org/2000/svg"
-            class="w-6 h-6 md:w-7 md:h-7 text-black group-hover:scale-110 transition-transform duration-200"
-            fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M3 3h2l.4 2M7 13h14l-1.5 8H6.4L5 6H21" />
-          </svg>
-          <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 shadow-md border border-white/80">
-            3
-          </span>
-        </button>
-
-        <div class="h-6 w-px bg-gray-300 hidden md:block"></div>
-
-        {{-- LOGIN / REGISTER --}}
-        <button class="bg-white text-sky-600 font-semibold px-4 py-1.5 rounded-full border border-sky-400 hover:bg-sky-50 transition shadow-sm text-sm md:text-base">
-          Masuk
-        </button>
-        <button class="bg-sky-700 text-white font-semibold px-4 py-1.5 rounded-full hover:bg-sky-800 transition shadow-md text-sm md:text-base">
-          Daftar
-        </button>
-      </div>
+    {{-- LOGO --}}
+    <div class="flex items-center space-x-3 select-none">
+      <img src="{{ asset('img/logo1.png') }}" alt="FinLoka Logo" class="h-12 w-auto object-contain drop-shadow">
     </div>
-  </header>
+
+    {{-- SEARCH BAR --}}
+    <div class="hidden md:block flex-grow mx-6 max-w-md">
+      <input type="text" placeholder="Cari produk..."
+        class="w-full rounded-full px-4 py-2.5 bg-gray-100 text-gray-700 border border-gray-200 focus:ring-2 focus:ring-sky-400 focus:outline-none placeholder-gray-500">
+    </div>
+
+    {{-- ICONS --}}
+    <div class="flex items-center space-x-4">
+      {{-- KERANJANG --}}
+      <button aria-label="Keranjang" class="relative group">
+        <svg xmlns="http://www.w3.org/2000/svg"
+          class="w-6 h-6 text-gray-700 group-hover:text-sky-600 transition-transform duration-200"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 3h2l.4 2M7 13h14l-1.5 8H6.4L5 6H21" />
+        </svg>
+        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full px-1.5 shadow-md">
+          3
+        </span>
+      </button>
+
+      {{-- GARIS PEMISAH --}}
+      <div class="h-6 w-px bg-gray-300 hidden md:block"></div>
+
+      @guest
+        <a href="{{ route('login') }}"
+          class="bg-white text-sky-600 font-semibold px-4 py-1.5 rounded-full border border-sky-400 hover:bg-sky-50 transition">
+          Masuk
+        </a>
+        <a href="{{ route('register') }}"
+          class="bg-sky-600 text-white font-semibold px-4 py-1.5 rounded-full hover:bg-sky-700 transition">
+          Daftar
+        </a>
+      @else
+        {{-- ICON USER --}}
+        <div class="relative">
+          <button id="userMenuButton" class="flex items-center justify-center w-9 h-9 rounded-full bg-sky-600 text-white font-bold focus:outline-none">
+            {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+          </button>
+
+          {{-- DROPDOWN --}}
+          <div id="userDropdown"
+            class="hidden absolute right-0 mt-3 w-60 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+
+            {{-- Header --}}
+            <div class="bg-sky-600 text-white px-4 py-3 flex items-center space-x-3">
+              <div class="w-10 h-10 flex items-center justify-center rounded-full bg-white/30 font-semibold text-lg">
+                {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+              </div>
+              <div>
+                <p class="font-semibold leading-tight">{{ Auth::user()->name }}</p>
+                <p class="text-sm opacity-90">{{ Auth::user()->email }}</p>
+              </div>
+            </div>
+
+            {{-- Tombol Logout --}}
+            <form action="{{ route('logout') }}" method="POST" class="border-t border-gray-200">
+              @csrf
+              <button type="submit"
+                class="w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 transition flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                  stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6a2 2 0 012 2v1" />
+                </svg>
+                <span>Keluar</span>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        {{-- SCRIPT DROPDOWN --}}
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const btn = document.getElementById("userMenuButton");
+            const dropdown = document.getElementById("userDropdown");
+            btn.addEventListener("click", () => dropdown.classList.toggle("hidden"));
+            document.addEventListener("click", (e) => {
+              if (!btn.contains(e.target) && !dropdown.contains(e.target)) dropdown.classList.add("hidden");
+            });
+          });
+        </script>
+      @endguest
+    </div>
+  </div>
+</header>
+
 
   {{-- ISI HALAMAN --}}
   <main class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-8">
@@ -81,9 +132,6 @@
   <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-3 gap-10 relative z-10">
     {{-- LOGO + DESKRIPSI --}}
     <div>
-      <div class="flex items-center space-x-2 mb-3">
-        <img src="{{ asset('img/logo1.png') }}" alt="FinLoka Logo" class="h-10 w-auto drop-shadow">
-      </div>
       <p class="text-sky-100 text-sm leading-relaxed">
         Platform belanja modern yang menghadirkan pengalaman bertransaksi cepat, aman, dan nyaman untuk semua.
       </p>
