@@ -15,4 +15,15 @@ class HomeController extends Controller
         // Kirim data ke view welcome.blade.php
         return view('welcome', compact('produks'));
     }
+    public function catalog()
+    {
+        // Ambil semua produk
+        $produks = Produk::all();
+
+        // Kirim data ke view catalog.blade.php
+        return view('catalog.index', compact('produks'));
+    }
+    
+    
+    
 }
