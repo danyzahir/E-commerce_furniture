@@ -10,10 +10,10 @@
     <h1 class="text-xl md:text-2xl font-bold text-gray-800">Data Users</h1>
 </div>
 
-<!-- TABLE USERS / MOBILE CARD LIST -->
+
 <div class="bg-white p-3 md:p-6 rounded-2xl shadow border border-gray-200">
 
-    <!-- === DESKTOP MODE (TABLE) === -->
+   
     <div class="hidden md:block overflow-x-auto">
         <table class="w-full text-sm text-gray-700 border-collapse">
             <thead class="border-b bg-gray-50 text-gray-600">
@@ -72,7 +72,7 @@
     </div>
 
 
-    <!-- === MOBILE MODE (CARD LIST) === -->
+
     <div class="md:hidden space-y-3">
         @foreach ($users as $user)
             <div class="border rounded-xl p-3 bg-gray-50 shadow-sm">
@@ -119,7 +119,6 @@
 </div>
 
 
-{{-- ========= MODAL EDIT (FULL WIDTH MOBILE) ========= --}}
 <div id="editUserModal"
     class="fixed inset-0 hidden items-end md:items-center justify-center bg-black/50 z-50">
 
@@ -168,7 +167,6 @@
 </div>
 
 
-{{-- ========= MODAL DELETE (FULL WIDTH MOBILE) ========= --}}
 <div id="confirmDeleteUserModal"
     class="fixed inset-0 hidden items-end md:items-center justify-center bg-black/50 z-50">
 
@@ -207,7 +205,7 @@
 
 
 
-{{-- ========= SCRIPT ========= --}}
+
 <script>
     function openEditUserModal(id, name, email, role) {
         document.getElementById('editName').value = name;

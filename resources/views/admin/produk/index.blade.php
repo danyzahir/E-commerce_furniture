@@ -17,7 +17,6 @@
 </div>
 
 
-{{-- ======================= DESKTOP TABLE ======================= --}}
 <div class="hidden md:block bg-white p-6 rounded-2xl shadow border border-gray-200 overflow-x-auto">
     <table class="w-full text-sm text-gray-700 border-collapse">
         <thead class="border-b bg-gray-50 text-gray-600">
@@ -36,10 +35,10 @@
             @forelse ($produks as $produk)
                 <tr class="border-b hover:bg-gray-50">
 
-                    {{-- Nomor --}}
+                  
                     <td class="py-3 px-2">{{ $loop->iteration }}</td>
 
-                    {{-- Gambar --}}
+                   
                     <td class="py-3 px-2">
                         @if ($produk->gambar)
                             <img src="{{ asset('storage/' . $produk->gambar) }}"
@@ -52,29 +51,27 @@
                         @endif
                     </td>
 
-                    {{-- Nama --}}
                     <td class="py-3 px-2 font-medium text-gray-800">
                         {{ $produk->nama_produk }}
                     </td>
 
-                    {{-- Kategori --}}
                     <td class="py-3 px-2">
                         {{ $produk->category ? $produk->category->nama : '-' }}
                     </td>
 
-                    {{-- Kuantitas --}}
+                    
                     <td class="py-3 px-2">{{ $produk->kuantitas }}</td>
 
-                    {{-- Harga --}}
+                    
                     <td class="py-3 px-2 font-semibold text-sky-700">
                         Rp {{ number_format($produk->harga, 0, ',', '.') }}
                     </td>
 
-                    {{-- Tombol Aksi --}}
+                
                     <td class="py-3 px-2 text-center">
                         <div class="flex gap-2 justify-center">
 
-                            {{-- EDIT --}}
+                            
                             <button
                                 onclick="editModal(
                                     '{{ $produk->id }}', 
@@ -89,7 +86,7 @@
                                 <i class="ri-edit-line"></i> Edit
                             </button>
 
-                            {{-- DELETE --}}
+                            
                             <form action="{{ route('admin.produk.destroy', $produk->id) }}"
                                   method="POST"
                                   class="delete-form"
@@ -123,16 +120,15 @@
 </div>
 
 
-{{-- ======================= MOBILE CARD VIEW (MATCH USERS UI) ======================= --}}
 <div class="md:hidden space-y-4">
 
     @forelse($produks as $produk)
         <div class="bg-white border border-gray-200 shadow-sm rounded-2xl p-4">
 
-            {{-- HEADER ROW --}}
+           
             <div class="flex items-start gap-4">
 
-                {{-- GAMBAR --}}
+             
                 @if ($produk->gambar)
                     <img src="{{ asset('storage/' . $produk->gambar) }}" 
                          class="w-16 h-16 rounded-xl object-cover border shadow-sm">
@@ -145,32 +141,32 @@
 
                 <div class="flex-1">
 
-                    {{-- NAMA PRODUK --}}
+                 
                     <h2 class="text-sm font-bold text-gray-800 leading-tight">
                         {{ $produk->nama_produk }}
                     </h2>
 
-                    {{-- KATEGORI --}}
+                
                     <p class="text-xs text-gray-500 mt-0.5">
                         {{ $produk->category ? $produk->category->nama : '-' }}
                     </p>
 
-                    {{-- HARGA --}}
+          
                     <p class="text-sky-700 font-bold text-sm mt-1">
                         Rp {{ number_format($produk->harga, 0, ',', '.') }}
                     </p>
                 </div>
             </div>
 
-            {{-- DETAIL ROW --}}
+      
             <div class="mt-3 text-xs text-gray-600">
                 <span class="font-semibold">Stok:</span> {{ $produk->kuantitas }}
             </div>
 
-            {{-- ACTION BUTTONS (MATCH EXACT USERS STYLE) --}}
+        
             <div class="grid grid-cols-2 gap-2 mt-4">
 
-                {{-- EDIT --}}
+        
                 <button
                     onclick="editModal(
                         '{{ $produk->id }}',
@@ -185,7 +181,7 @@
                     <i class="ri-edit-line text-sm"></i> Edit
                 </button>
 
-                {{-- DELETE --}}
+                
                 <form action="{{ route('admin.produk.destroy', $produk->id) }}" 
                       method="POST"
                       class="delete-form"
@@ -209,8 +205,6 @@
 
 </div>
 
-
-{{-- ======================= MODAL ======================= --}}
 @include('admin.produk.modal')
 
 @endsection

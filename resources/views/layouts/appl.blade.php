@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
     <style>
-        /* Menghilangkan kedip saat load */
+        
         body { visibility: hidden; }
         html.loaded body { visibility: visible; }
     </style>
@@ -23,12 +23,12 @@
 
 <body class="bg-gray-100 text-gray-800">
 
-    <!-- HEADER MOBILE -->
+    
     <header
         class="md:hidden bg-gradient-to-r from-sky-700 to-sky-900 text-white px-5 py-4 
                shadow-lg rounded-b-3xl flex items-center justify-between">
 
-        <!-- Logo + Title -->
+       
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-md">
                 <i class="ri-dashboard-fill text-xl"></i>
@@ -36,17 +36,16 @@
             <h1 class="font-semibold text-lg tracking-wide">Funiloka Admin</h1>
         </div>
 
-        <!-- User + Logout -->
+       
         <div class="flex items-center gap-3">
 
-            <!-- Icon User -->
+            
             <div class="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md 
                         flex items-center justify-center text-white">
                 <i class="ri-user-3-line text-xl"></i>
             </div>
 
-            <!-- Logout Button -->
-            <form action="{{ route('logout') }}" method="POST">
+                        <form action="{{ route('logout') }}" method="POST">
                 @csrf
                 <button class="p-2 bg-white/20 backdrop-blur-md rounded-xl hover:bg-white/30 transition">
                     <i class="ri-logout-box-r-line text-xl"></i>
@@ -60,7 +59,7 @@
 
     <div class="flex min-h-screen">
 
-        <!-- SIDEBAR DEKSTOP -->
+       
         <aside class="hidden md:flex md:flex-col w-64 
                       bg-gradient-to-b from-sky-700 to-sky-900 
                       text-white shadow-xl">
@@ -113,14 +112,13 @@
         </aside>
 
 
-        <!-- MAIN CONTENT -->
-        <main class="flex-1 p-5 md:p-10 pb-32">
+            <main class="flex-1 p-5 md:p-10 pb-32">
             @yield('content')
         </main>
 
     </div>
 
-    <!-- BOTTOM NAV MOBILE -->
+    
     <nav
         class="md:hidden fixed bottom-2 left-1/2 -translate-x-1/2 
         bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/30

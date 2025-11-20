@@ -10,7 +10,6 @@
     <h1 class="text-2xl font-bold text-gray-800">Data Kategori</h1>
 </div>
 
-<!-- FORM TAMBAH KATEGORI -->
 <div class="bg-white p-6 rounded-2xl shadow border border-gray-200 mb-6 max-w-md">
     <h2 class="text-lg font-semibold text-sky-700 mb-4">Tambah Kategori</h2>
 
@@ -26,7 +25,7 @@
     </form>
 </div>
 
-<!-- TABLE KATEGORI -->
+
 <div class="bg-white p-6 rounded-2xl shadow border border-gray-200 overflow-x-auto">
     <table class="w-full text-sm text-gray-700 border-collapse">
         <thead class="border-b bg-gray-50 text-gray-600">
@@ -48,19 +47,19 @@
 
                     <td class="py-3 px-2 flex gap-2">
 
-                        <!-- TOMBOL EDIT -->
+ 
                         <button onclick="document.getElementById('modal-edit-{{ $kategori->id }}').classList.remove('hidden')"
                             class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 px-3 py-1 rounded-lg text-xs font-medium flex items-center gap-1">
                             <i class="ri-edit-line"></i> Edit
                         </button>
 
-                        <!-- TOMBOL DELETE -->
+  
                         <button onclick="document.getElementById('modal-delete-{{ $kategori->id }}').classList.remove('hidden')"
                             class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded-lg text-xs font-medium flex items-center gap-1">
                             <i class="ri-delete-bin-line"></i> Hapus
                         </button>
 
-                        <!-- MODAL EDIT -->
+    
                         <div id="modal-edit-{{ $kategori->id }}" class="fixed inset-0 z-50 hidden bg-black/40 flex items-center justify-center">
 
                             <div class="bg-white rounded-2xl shadow-lg w-full max-w-md p-6 relative">
@@ -99,7 +98,7 @@
                             </div>
                         </div>
 
-                        <!-- MODAL DELETE -->
+                     
                         <div id="modal-delete-{{ $kategori->id }}" class="fixed inset-0 z-50 hidden bg-black/40 flex items-center justify-center">
 
                             <div class="bg-white rounded-2xl shadow-lg w-full max-w-md p-6 relative">
