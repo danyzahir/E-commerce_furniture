@@ -6,7 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\UserController;
-
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,18 +14,20 @@ use App\Http\Controllers\Admin\UserController;
 |--------------------------------------------------------------------------
 */
 
-// Halaman Home
+// Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Halaman Katalog → untuk user
+// Katalog
 Route::get('/katalog', [ProdukController::class, 'index'])->name('katalog.index');
 
-// Halaman Detail Produk → untuk user
+// Detail Produk
 Route::get('/produk/{id}', [ProdukController::class, 'show'])->name('produk.show');
 
-// Halaman Cart
-Route::view('/cart', 'cart.index')->name('cart.index');
-
+// CART (yang benar)
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+Route::delete('/cart/delete/{id}', [CartController::class, 'delete'])->name('cart.delete');
+Route::post('/cart/delete-selected', [CartController::class, 'deleteSelected'])->name('cart.deleteSelected');
 
 /*
 |--------------------------------------------------------------------------
@@ -46,21 +48,17 @@ Route::prefix('admin')
             return view('admin.index');
         })->name('dashboard');
 
-        /*
-        |--------------------------------------------------------------------------
-        | USERS CRUD (SEHARUSNYA ADA JUGA)
-        |--------------------------------------------------------------------------
-        */
-        Route::get('/users', [UserController::class, 'index'])->name('users.index');
-        Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-        Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
-        Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+        // USERS CRUD
+        Route::resource('users', UserController::class)
+            ->except(['show'])
+            ->names([
+                'index' => 'users.index',
+                'edit' => 'users.edit',
+                'update' => 'users.update',
+                'destroy' => 'users.destroy',
+            ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | PRODUK CRUD UNTUK ADMIN
-        |--------------------------------------------------------------------------
-        */
+        // PRODUK CRUD
         Route::resource('produk', ProdukController::class)->names([
             'index' => 'produk.index',
             'create' => 'produk.create',
@@ -71,11 +69,7 @@ Route::prefix('admin')
             'destroy' => 'produk.destroy',
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | CATEGORY CRUD
-        |--------------------------------------------------------------------------
-        */
+        // CATEGORY CRUD
         Route::resource('categories', CategoryController::class)
             ->except(['create', 'edit', 'show'])
             ->names([
@@ -86,11 +80,9 @@ Route::prefix('admin')
             ]);
     });
 
-
-
 /*
 |--------------------------------------------------------------------------
-| AUTH ROUTES (LOGIN, REGISTER)
+| AUTH ROUTES
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
