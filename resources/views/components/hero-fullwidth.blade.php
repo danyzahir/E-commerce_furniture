@@ -36,11 +36,7 @@
                     Shop Now
                 </a>
 
-                <a href="#about"
-                    class="border-2 border-white px-12 py-4 rounded-full font-semibold
-                          hover:bg-white hover:text-[#2F2419] active:scale-95 transition-all">
-                    Explore
-                </a>
+                
             </div>
         </div>
 

@@ -33,7 +33,7 @@
         <!-- LEFT PANEL (GAMBAR UTUH - TIDAK DIUBAH) -->
         <div class="w-1/2 p-0 animate-fadeInUp"
             style="
-                background-image: url('{{ asset('img/Login12.png') }}');
+                background-image: url('{{ asset('img/1.jpeg') }}');
                 background-size: cover;
                 background-position: center;
             ">
@@ -44,7 +44,7 @@
 
             <!-- Logo -->
             <div class="flex items-center justify-center pb-5">
-                <img src="{{ asset('img/Logo1.png') }}" class="h-14 w-auto object-contain">
+                <img src="{{ asset('img/Logooo.png') }}" class="h-14 w-auto object-contain">
             </div>
 
             <h2 class="text-3xl font-bold mb-1 text-center text-[#4A2C16]">

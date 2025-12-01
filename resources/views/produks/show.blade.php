@@ -26,7 +26,6 @@
 
 @section('content')
 
-    {{-- ❤️ TOAST SUPER HALUS TANPA AJAX --}}
     @if (session('success'))
         <div id="toastSuccess"
             class="fixed top-6 right-6 bg-[#4A2308] text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3

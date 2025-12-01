@@ -137,10 +137,10 @@
                 let price = parseInt(harga.dataset.price) || 0;
                 let qty = parseInt(item.querySelector(".qtyValue").innerText) || 1;
 
-                if (checkbox.checked) {
-                    total += price * qty;
-                    count++;
-                }
+                // hitung semua item tanpa harus dicentang
+                total += price * qty;
+                count++;
+
 
                 harga.innerText = "Rp " + (price * qty).toLocaleString("id-ID");
             });
