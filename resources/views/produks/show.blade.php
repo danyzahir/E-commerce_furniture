@@ -26,142 +26,134 @@
 
 @section('content')
 
-    @if (session('success'))
-        <div id="toastSuccess"
-            class="fixed top-6 right-6 bg-[#4A2308] text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3
-                   border border-[#E4D5C1] z-50 toast-in">
+{{-- ✅ TOAST SUKSES (DI BAWAH HEADER, TIDAK NUTUP CART) --}}
+@if (session('success'))
+    <div id="toastSuccess"
+        class="fixed top-24 right-6 bg-[#4A2308] text-white px-6 py-4 rounded-xl shadow-lg flex items-center gap-3
+               border border-[#E4D5C1] z-50 toast-in">
 
-            <i class="fa-solid fa-circle-check text-white text-xl"></i>
-            <span class="font-medium tracking-wide">{{ session('success') }}</span>
+        <i class="fa-solid fa-circle-check text-white text-xl"></i>
+        <span class="font-medium tracking-wide">{{ session('success') }}</span>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            const toast = document.getElementById("toastSuccess");
+            if (!toast) return;
+
+            toast.classList.remove("toast-in");
+            toast.classList.add("toast-out");
+
+            setTimeout(() => toast.remove(), 350);
+        }, 2300);
+    </script>
+@endif
+
+<div class="container mx-auto px-6 py-10">
+
+    {{-- Breadcrumb --}}
+    <nav class="text-sm text-gray-500 mb-4 flex items-center gap-1">
+        <a href="/" class="hover:text-gray-700">Beranda</a>
+        <span>/</span>
+        <a href="{{ route('katalog.index') }}" class="hover:text-gray-700">Produk</a>
+        <span>/</span>
+        <span class="text-gray-800 font-medium">{{ $produk->nama_produk }}</span>
+    </nav>
+
+    <div class="grid md:grid-cols-2 gap-12">
+
+        {{-- Gambar Produk --}}
+        <div class="space-y-4">
+            <div class="bg-white rounded-3xl overflow-hidden shadow-xl p-6 border border-gray-200 group">
+                <img id="mainImage" src="{{ asset('storage/' . $produk->gambar) }}"
+                    class="object-contain max-h-[460px] mx-auto transition duration-500 group-hover:scale-105">
+            </div>
+
+            <div class="flex gap-4">
+                @if ($produk->images)
+                    @foreach ($produk->images as $image)
+                        <img onclick="gantiGambar(this)"
+                            src="{{ asset('storage/' . $image) }}"
+                            class="thumb w-24 h-24 object-cover rounded-2xl border-2 border-gray-300 
+                                   hover:border-[#B88753] cursor-pointer transition">
+                    @endforeach
+                @endif
+            </div>
         </div>
 
-        <script>
-            setTimeout(() => {
-                const toast = document.getElementById("toastSuccess");
-                if (!toast) return;
+        {{-- Info Produk --}}
+        <div class="flex flex-col justify-between">
+            <div>
 
-                toast.classList.remove("toast-in");
-                toast.classList.add("toast-out");
+                <h1 class="text-4xl font-bold text-gray-800 mb-3 leading-tight">
+                    {{ $produk->nama_produk }}
+                </h1>
 
-                setTimeout(() => toast.remove(), 350);
-            }, 2300);
-        </script>
-    @endif
+                {{-- Harga --}}
+                <div class="flex items-end gap-3 mb-4">
+                    <span class="text-4xl font-extrabold text-gray-900 tracking-tight">
+                        Rp{{ number_format($produk->harga, 0, ',', '.') }}
+                    </span>
 
-
-
-    <div class="container mx-auto px-6 py-10">
-
-        {{-- Breadcrumb --}}
-        <nav class="text-sm text-gray-500 mb-4 flex items-center gap-1">
-            <a href="/" class="hover:text-gray-700">Beranda</a>
-            <span>/</span>
-            <a href="{{ route('katalog.index') }}" class="hover:text-gray-700">Produk</a>
-            <span>/</span>
-            <span class="text-gray-800 font-medium">{{ $produk->nama_produk }}</span>
-        </nav>
-
-        <div class="grid md:grid-cols-2 gap-12">
-
-            {{-- Gambar Produk --}}
-            <div class="space-y-4">
-                <div class="bg-white rounded-3xl overflow-hidden shadow-xl p-6 border border-gray-200 group">
-                    <img id="mainImage" src="{{ asset('storage/' . $produk->gambar) }}"
-                        class="object-contain max-h-[460px] mx-auto transition duration-500 group-hover:scale-105">
-                </div>
-
-                <div class="flex gap-4">
-                    @if ($produk->images)
-                        @foreach ($produk->images as $image)
-                            <img onclick="gantiGambar(this)"
-                                src="{{ asset('storage/' . $image) }}"
-                                class="thumb w-24 h-24 object-cover rounded-2xl border-2 border-gray-300 
-                                       hover:border-[#B88753] cursor-pointer transition">
-                        @endforeach
+                    @if ($produk->diskon)
+                        <span class="text-gray-400 line-through text-lg">
+                            Rp{{ number_format($produk->harga_asli, 0, ',', '.') }}
+                        </span>
+                        <span class="bg-[#8A5A32] text-white text-xs px-2 py-1 rounded-full font-semibold">
+                            Hemat {{ $produk->diskon }}%
+                        </span>
                     @endif
                 </div>
-            </div>
 
+                {{-- Rating --}}
+                <div class="flex items-center gap-2 mb-5">
+                    <div class="flex text-yellow-400 text-lg">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-regular fa-star"></i>
+                    </div>
+                    <span class="text-gray-500 text-sm">4.0 • 123 Ulasan</span>
+                </div>
 
-            {{-- Info Produk --}}
-            <div class="flex flex-col justify-between">
-                <div>
+                {{-- Deskripsi --}}
+                <p class="text-gray-600 leading-relaxed text-[15px] mb-8">
+                    {{ $produk->deskripsi }}
+                </p>
 
-                    <h1 class="text-4xl font-bold text-gray-800 mb-3 leading-tight">
-                        {{ $produk->nama_produk }}
-                    </h1>
+                {{-- Qty + Add to Cart --}}
+                <div class="space-y-5">
+                    <div class="flex items-center gap-2">
+                        <button id="minusBtn"
+                            class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md hover:bg-gray-100 active:scale-95">-</button>
 
-                    {{-- Harga --}}
-                    <div class="flex items-end gap-3 mb-4">
-                        <span class="text-4xl font-extrabold text-gray-900 tracking-tight">
-                            Rp{{ number_format($produk->harga, 0, ',', '.') }}
-                        </span>
+                        <input id="qtyInput" type="text" value="1"
+                            class="w-12 h-8 text-center border border-gray-300 rounded-md">
 
-                        @if ($produk->diskon)
-                            <span class="text-gray-400 line-through text-lg">
-                                Rp{{ number_format($produk->harga_asli, 0, ',', '.') }}
-                            </span>
-                            <span class="bg-[#8A5A32] text-white text-xs px-2 py-1 rounded-full font-semibold">
-                                Hemat {{ $produk->diskon }}%
-                            </span>
-                        @endif
+                        <button id="plusBtn"
+                            class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md hover:bg-gray-100 active:scale-95">+</button>
                     </div>
 
-                    {{-- Rating --}}
-                    <div class="flex items-center gap-2 mb-5">
-                        <div class="flex text-yellow-400 text-lg">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-regular fa-star"></i>
-                        </div>
-                        <span class="text-gray-500 text-sm">4.0 • 123 Ulasan</span>
-                    </div>
+                    {{-- Form Tambah Keranjang --}}
+                    <form action="{{ route('cart.add') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $produk->id }}">
+                        <input type="hidden" name="qty" id="qtyHidden" value="1">
 
-                    {{-- Deskripsi --}}
-                    <p class="text-gray-600 leading-relaxed text-[15px] mb-8">
-                        {{ $produk->deskripsi }}
-                    </p>
-
-                    {{-- Qty + Add to Cart --}}
-                    <div class="space-y-5">
-
-                        <div class="flex items-center gap-2">
-                            <button id="minusBtn"
-                                class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md hover:bg-gray-100 active:scale-95">
-                                -
-                            </button>
-
-                            <input id="qtyInput" type="text" value="1"
-                                class="w-12 h-8 text-center border border-gray-300 rounded-md focus:ring-[#B88753]">
-
-                            <button id="plusBtn"
-                                class="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md hover:bg-gray-100 active:scale-95">
-                                +
-                            </button>
-                        </div>
-
-                        {{-- Form Tambah Keranjang --}}
-                        <form action="{{ route('cart.add') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $produk->id }}">
-                            <input type="hidden" name="qty" id="qtyHidden" value="1">
-
-                            <button type="submit"
-                                class="bg-[#8A5A32] hover:bg-[#6F4628] text-white px-8 py-3 rounded-full 
-                                       font-semibold shadow-md transition flex items-center gap-2">
-                                <i class="fa-solid fa-cart-plus"></i>
-                                Tambah ke Keranjang
-                            </button>
-                        </form>
-
-                    </div>
+                        <button type="submit"
+                            class="bg-[#8A5A32] hover:bg-[#6F4628] text-white px-8 py-3 rounded-full 
+                                   font-semibold shadow-md transition flex items-center gap-2">
+                            <i class="fa-solid fa-cart-plus"></i>
+                            Tambah ke Keranjang
+                        </button>
+                    </form>
 
                 </div>
+
             </div>
         </div>
-
+    </div>
         {{-- Rekomendasi --}}
         <div class="mt-20">
             <h2 class="font-bold text-2xl mb-8 text-[#4A2308] select-none text-center">Rekomendasi untuk Kamu</h2>
@@ -205,33 +197,31 @@
 
             </div>
         </div>
+</div>
 
-    </div>
+{{-- SCRIPT --}}
+<script>
+    function gantiGambar(el) {
+        document.getElementById('mainImage').src = el.src;
+        document.querySelectorAll('.thumb').forEach(t => t.classList.remove('border-[#B88753]'));
+        el.classList.add('border-[#B88753]');
+    }
 
+    const qtyInput = document.getElementById('qtyInput');
+    const qtyHidden = document.getElementById('qtyHidden');
 
-    {{-- SCRIPT --}}
-    <script>
-        function gantiGambar(el) {
-            document.getElementById('mainImage').src = el.src;
-            document.querySelectorAll('.thumb').forEach(t => t.classList.remove('border-[#B88753]'));
-            el.classList.add('border-[#B88753]');
-        }
+    document.getElementById('minusBtn').onclick = () => {
+        let v = parseInt(qtyInput.value);
+        if (v > 1) qtyInput.value = v - 1;
+        qtyHidden.value = qtyInput.value;
+    };
 
-        const qtyInput = document.getElementById('qtyInput');
-        const qtyHidden = document.getElementById('qtyHidden');
+    document.getElementById('plusBtn').onclick = () => {
+        qtyInput.value = parseInt(qtyInput.value) + 1;
+        qtyHidden.value = qtyInput.value;
+    };
 
-        document.getElementById('minusBtn').onclick = () => {
-            let v = parseInt(qtyInput.value);
-            if (v > 1) qtyInput.value = v - 1;
-            qtyHidden.value = qtyInput.value;
-        };
-
-        document.getElementById('plusBtn').onclick = () => {
-            qtyInput.value = parseInt(qtyInput.value) + 1;
-            qtyHidden.value = qtyInput.value;
-        };
-
-        qtyInput.oninput = () => qtyHidden.value = qtyInput.value;
-    </script>
+    qtyInput.oninput = () => qtyHidden.value = qtyInput.value;
+</script>
 
 @endsection

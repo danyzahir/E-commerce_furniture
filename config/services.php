@@ -13,6 +13,11 @@ return [
     | a conventional file to locate the various service credentials.
     |
     */
+    'xendit' => [
+    'secret_key' => env('XENDIT_SECRET_KEY'),
+    'public_key' => env('XENDIT_PUBLIC_KEY'),
+],
+
 
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),

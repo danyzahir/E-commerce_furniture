@@ -92,6 +92,11 @@
                    {{ request()->routeIs('admin.users.*') ? 'bg-[#6A3F23]' : 'hover:bg-[#8C5C3E]' }}">
                     <i class="ri-user-line"></i> Users
                 </a>
+                <a href="{{ route('admin.orders.index') }}"
+                   class="flex items-center gap-3 px-3 py-2 rounded-lg transition 
+                   {{ request()->routeIs('admin.orders.*') ? 'bg-[#6A3F23]' : 'hover:bg-[#8C5C3E]' }}">
+                    <i class="ri-shopping-bag-line"></i> Orders
+                </a>
 
             </nav>
 

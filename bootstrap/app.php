@@ -11,8 +11,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+
+        // ✅ MATIKAN CSRF KHUSUS UNTUK WEBHOOK XENDIT
+        $middleware->validateCsrfTokens(except: [
+            'xendit/callback',
+        ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })
+    ->create();

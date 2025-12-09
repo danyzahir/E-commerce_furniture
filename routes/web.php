@@ -7,23 +7,27 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminOrderController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
-| ROUTE USER (FRONTEND)
+| USER / FRONTEND
 |--------------------------------------------------------------------------
 */
-
-// Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Katalog
 Route::get('/katalog', [ProdukController::class, 'index'])->name('katalog.index');
-
-// Detail Produk
 Route::get('/produk/{id}', [ProdukController::class, 'show'])->name('produk.show');
 
-// CART (yang benar)
+/*
+|--------------------------------------------------------------------------
+| CART
+|--------------------------------------------------------------------------
+*/
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::delete('/cart/delete/{id}', [CartController::class, 'delete'])->name('cart.delete');
@@ -31,7 +35,53 @@ Route::post('/cart/delete-selected', [CartController::class, 'deleteSelected'])-
 
 /*
 |--------------------------------------------------------------------------
-| ROUTE ADMIN (LOGIN WAJIB)
+| CHECKOUT + XENDIT
+|--------------------------------------------------------------------------
+*/
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+
+/* ✅ WEBHOOK XENDIT (WAJIB TANPA AUTH & CSRF) */
+Route::post('/xendit/callback', [CheckoutController::class, 'callback'])
+    ->name('xendit.callback');
+
+/* ✅ REDIRECT RESULT */
+Route::get('/order-success/{id}', function ($id) {
+    return view('orders.success', compact('id'));
+})->name('orders.success');
+
+Route::get('/order-failed/{id}', function ($id) {
+    return view('orders.failed', compact('id'));
+})->name('orders.failed');
+
+/* ✅ (OPTIONAL) MANUAL PAYMENT TEST */
+Route::get('/pay/{id}', [PaymentController::class, 'createInvoice'])
+    ->name('pay.order');
+
+/*
+|--------------------------------------------------------------------------
+| PROFILE
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+});
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN ORDERS
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/orders', [AdminOrderController::class, 'index'])->name('admin.orders.index');
+    Route::get('/admin/orders/{id}', [AdminOrderController::class, 'show'])->name('admin.orders.show');
+});
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN DASHBOARD
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')
@@ -39,50 +89,17 @@ Route::prefix('admin')
     ->name('admin.')
     ->group(function () {
 
-        // Dashboard Admin
-        Route::get('/', function () {
-            if (auth()->user()->role !== 'admin') {
-                return redirect()->route('home')
-                    ->with('error', 'Akses ditolak! Anda bukan admin.');
-            }
-            return view('admin.index');
-        })->name('dashboard');
+        Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
-        // USERS CRUD
-        Route::resource('users', UserController::class)
-            ->except(['show'])
-            ->names([
-                'index' => 'users.index',
-                'edit' => 'users.edit',
-                'update' => 'users.update',
-                'destroy' => 'users.destroy',
-            ]);
-
-        // PRODUK CRUD
-        Route::resource('produk', ProdukController::class)->names([
-            'index' => 'produk.index',
-            'create' => 'produk.create',
-            'store' => 'produk.store',
-            'show' => 'produk.show',
-            'edit' => 'produk.edit',
-            'update' => 'produk.update',
-            'destroy' => 'produk.destroy',
-        ]);
-
-        // CATEGORY CRUD
+        Route::resource('users', UserController::class)->except(['show']);
+        Route::resource('produk', ProdukController::class);
         Route::resource('categories', CategoryController::class)
-            ->except(['create', 'edit', 'show'])
-            ->names([
-                'index' => 'categories.index',
-                'store' => 'categories.store',
-                'update' => 'categories.update',
-                'destroy' => 'categories.destroy',
-            ]);
+            ->except(['create', 'edit', 'show']);
     });
 
 /*
 |--------------------------------------------------------------------------
-| AUTH ROUTES
+| AUTH
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
@@ -93,5 +110,4 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 });
 
-// Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
