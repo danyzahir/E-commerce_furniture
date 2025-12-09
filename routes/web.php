@@ -12,6 +12,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminOrderController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GoogleAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,12 @@ Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('
 /* ✅ WEBHOOK XENDIT (WAJIB TANPA AUTH & CSRF) */
 Route::post('/xendit/callback', [CheckoutController::class, 'callback'])
     ->name('xendit.callback');
+
+Route::get('/login/google', [GoogleAuthController::class, 'redirect'])
+    ->name('login.google');
+
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
+
 
 /* ✅ REDIRECT RESULT */
 Route::get('/order-success/{id}', function ($id) {

@@ -7,22 +7,44 @@
     <title>Login</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <style>
         @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .animate-fadeInUp { animation: fadeInUp .8s ease-out; }
+
+        .animate-fadeInUp {
+            animation: fadeInUp .8s ease-out;
+        }
 
         @keyframes bounceIn {
-            0% { transform: scale(.5); opacity: 0; }
-            50% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(.5);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
-        .animate-bounceIn { animation: bounceIn .7s ease-out; }
+
+        .animate-bounceIn {
+            animation: bounceIn .7s ease-out;
+        }
     </style>
 </head>
 
@@ -74,16 +96,17 @@
                 <div>
                     <input type="email" name="email" placeholder="Email address"
                         class="w-full p-3 border border-gray-300 rounded-xl bg-gray-50 
-                               focus:ring-[#8A5A32] focus:border-[#8A5A32] outline-none" required>
+                               focus:ring-[#8A5A32] focus:border-[#8A5A32] outline-none"
+                        required>
                 </div>
 
                 <div class="relative">
                     <input type="password" name="password" id="password" placeholder="Password"
                         class="w-full p-3 border border-gray-300 rounded-xl bg-gray-50
-                               focus:ring-[#8A5A32] focus:border-[#8A5A32] outline-none" required>
+                               focus:ring-[#8A5A32] focus:border-[#8A5A32] outline-none"
+                        required>
 
-                    <span id="togglePassword"
-                        class="absolute right-3 top-3 text-gray-500 cursor-pointer">
+                    <span id="togglePassword" class="absolute right-3 top-3 text-gray-500 cursor-pointer">
                         <i class="fas fa-eye"></i>
                     </span>
                 </div>
@@ -103,11 +126,13 @@
             <div class="mt-6 text-center text-gray-600">Or login with</div>
 
             <div class="flex justify-center gap-4 mt-3">
-                <button class="flex items-center gap-2 px-4 py-2 border rounded-xl bg-gray-50 hover:bg-gray-100 transition">
+                <a href="{{ route('login.google') }}"
+                    class="flex items-center gap-2 px-4 py-2 border rounded-xl bg-gray-50 hover:bg-gray-100 transition">
                     <img src="https://cdn-icons-png.flaticon.com/512/2991/2991148.png" class="w-5">
-                    Google
-                </button>
+                    Login dengan Google
+                </a>
             </div>
+
 
             <div class="text-center mt-6 text-gray-700">
                 Don't have an account?
@@ -121,7 +146,7 @@
         const togglePassword = document.getElementById("togglePassword");
         const passwordField = document.getElementById("password");
 
-        togglePassword.addEventListener("click", function () {
+        togglePassword.addEventListener("click", function() {
             const type = passwordField.type === "password" ? "text" : "password";
             passwordField.type = type;
             this.innerHTML = `<i class="fas ${type === "password" ? "fa-eye" : "fa-eye-slash"}"></i>`;
@@ -129,4 +154,5 @@
     </script>
 
 </body>
+
 </html>
